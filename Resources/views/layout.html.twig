@@ -1,0 +1,43 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {% block stylesheets %}
+            {% stylesheets filter="cssrewrite"
+                'css/bootstrap.css'
+                'css/admin.css'
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}">
+            {% endstylesheets %}
+        {% endblock %}
+                
+        <title>Project :: status page</title>
+    </head>
+    <body>
+
+        <div class="container">
+
+            <div class="row">
+            	<div class="content span12">
+					{% block content %}{% endblock %}
+                </div>
+            </div>
+
+        </div>
+        
+    </body>
+</html>

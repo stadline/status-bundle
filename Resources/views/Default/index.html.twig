@@ -1,0 +1,59 @@
+{% extends "StadLineStatusPageBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Status Page</h1>
+</div>
+
+{% set _total = collections.countRequirements + collections.countRecommendations %}
+{% set _total_failedRecommendations = collections.countFailedRecommendations %}
+{% set _total_failedRequirements = collections.countFailedRequirements %}
+{% set _total_success =  _total - _total_failedRecommendations - _total_failedRequirements%}
+
+<div class="progress">
+  <div class="bar bar-success progress-bar progress-bar-success" style="width: {{ (_total_success / _total *100) | number_format(2) }}%">
+    <span class="sr-only">{{ _total_success }} Success</span>
+  </div>
+  <div class="bar bar-warning progress-bar progress-bar-warning" style="width: {{ (_total_failedRecommendations / _total *100) | number_format(2) }}%">
+    <span class="sr-only">{{ _total_failedRecommendations }}  warning</span>
+  </div>
+  <div class="bar bar-danger progress-bar progress-bar-danger" style="width: {{ (_total_failedRequirements / _total *100) | number_format(2) }}%">
+    <span class="sr-only">{{ _total_failedRequirements }} error</span>
+  </div>
+</div>
+
+{% for key, collection in collections %}
+<h2>{{ collection.name }}</h2>
+
+<h3>Requirements</h3>
+<dl>
+    {% for requirement in collection.requirements %}
+    <dt {% if requirement.isFulfilled == false %}class="text-error text-danger"{% endif %}>
+        <span class="badge {% if requirement.isFulfilled %}badge-success{% else %}badge-important{% endif %}">{% if requirement.isFulfilled %}OK{% else %}KO{% endif %}</span>
+        {{ requirement.testMessage }}
+    </dt>
+        {% if requirement.helpHtml %}
+    <dd>{{ requirement.helpHtml | raw }}</dd>
+        {% endif %}
+    {% else %}
+    <dt class="text-muted muted">No requirement</dt>
+    {% endfor %}
+</dl>
+
+{% if collection.recommendations %}
+<h3>Recommendations</h3>
+<dl>
+    {% for recommendation in collection.recommendations %}
+    <dt {% if recommendation.isFulfilled == false %}class="text-warning text-danger"{% endif %}><span class="badge {% if recommendation.isFulfilled %}badge-success{% else %}badge-warning{% endif %}">{% if recommendation.isFulfilled %}OK{% else %}KO{% endif %}</span> {{ recommendation.testMessage }}</dt>
+        {% if recommendation.helpHtml %}
+    <dd>{{ recommendation.helpHtml | raw }}</dd>
+        {% endif %}
+    {% else %}
+    <dt class="text-muted muted">No recommendation</dt>
+    {% endfor %}
+</dl>
+{% endif %}
+
+{% endfor %}
+
+{% endblock %}

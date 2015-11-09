@@ -1,0 +1,7 @@
+stadline_status_page_homepage:
+    pattern:  /status
+    defaults: { _controller: StadLineStatusPageBundle:Default:index}
+    
+stadline_status_page_params:
+    pattern:  /status/params
+    defaults: { _controller: StadLineStatusPageBundle:Default:exposeParams }
