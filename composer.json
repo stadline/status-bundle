@@ -1,0 +1,18 @@
+{
+    "name": "stadline/status-bundle",
+    "type": "symfony2-bundle",
+    "description": "Symfony2 bundle",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "olivier",
+            "email": "olivier.bialorucki@stadline.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
