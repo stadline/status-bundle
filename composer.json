@@ -12,7 +12,9 @@
     "license" : [
         "MIT"
     ],
-    "require": {},
+    "require": {
+        "symfony/assetic-bundle": "~2.3"
+    },
     "autoload" : {
         "psr-0" : {
             "StadLine\\StatusPageBundle" : ""
