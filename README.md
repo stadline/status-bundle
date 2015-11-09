@@ -5,14 +5,17 @@ Installation:
 ------------
 
 app/AppKernel.php
+
     new StadLine\StatusPageBundle\StadLineStatusPageBundle()
 
 app/config/routing.yml
+
     stadline_status_page:
         resource: "@StadLineStatusPageBundle/Resources/config/routing.yml"
         prefix:   /
 
 app/config/assetic.yml
+
     assetic:
         bundles:
             - StadLineStatusPageBundle
