@@ -13,7 +13,8 @@
         "MIT"
     ],
     "require": {
-        "symfony/assetic-bundle": "~2.3"
+        "symfony/assetic-bundle": "~2.3",
+        "braincrafted/bootstrap-bundle": "~2.0"
     },
     "autoload" : {
         "psr-0" : {
