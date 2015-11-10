@@ -31,6 +31,11 @@ composer.json
         ]
     }
     
+config.yml
+
+    imports:
+        - { resource: version.yml }
+
 A propos
 --------
 
