@@ -20,7 +20,14 @@ app/config/assetic.yml
         bundles:
             - StadLineStatusPageBundle
 
+composer.json
 
+    "scripts": {
+        "post-install-cmd": [
+            "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
+        ]
+    }
+    
 A propos
 --------
 
