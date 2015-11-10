@@ -7,7 +7,7 @@ parameters:
 services:
     stadline_status_page.version.requirement:
         class: %stadline_status_page.version.requirement.class%
-        arguments: [%kernel.root_dir%, %status.git_version_file%]
+        arguments: [@service_container]
         tags:
           - { name: status_page.requirement}
 

@@ -32,14 +32,12 @@ class ScriptHandler
     public static function buildVersion(Event $event)
     {
         $extras = $event->getComposer()->getPackage()->getExtra();
-        $version = self::getProcessOutPut('git describe --tags');
-
         self::$sfAppDir = $extras['symfony-app-dir'];
         self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
         self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
         self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
 
-        self::createVersionFile($version);
+        self::createVersionFile(self::$commitTag);
     }
 
     /**
