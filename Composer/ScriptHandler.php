@@ -9,8 +9,17 @@ use Symfony\Component\Yaml\Dumper;
 
 class ScriptHandler
 {
-    /** @var  string */
+    /** @var string */
     private static $sfAppDir;
+
+    /** @var string */
+    private static $commitHash;
+
+    /** @var string */
+    private static $commitTag;
+
+    /** @var string */
+    private static $branch;
 
     /** @var integer */
     private static $yamlMode = 2;
@@ -23,18 +32,12 @@ class ScriptHandler
     public static function buildVersion(Event $event)
     {
         $extras = $event->getComposer()->getPackage()->getExtra();
-        self::$sfAppDir = $extras['symfony-app-dir'];
-
         $version = self::getProcessOutPut('git describe --tags');
-        $commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
-        $commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
 
-        self::runProcess(sprintf(
-            'echo {"vcs": "git", "branch": "master", "hash": "%s", "tag": "%s"} > %s',
-            $commitHash,
-            $commitTag,
-            self::$sfAppDir . '/../.git_version'
-        ));
+        self::$sfAppDir = $extras['symfony-app-dir'];
+        self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
+        self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
+        self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
 
         self::createVersionFile($version);
     }
@@ -54,20 +57,7 @@ class ScriptHandler
             throw new ProcessFailedException($process);
         }
 
-        return $process->getOutput();
-    }
-
-    /**
-     * @param $cmd
-     */
-    private static function runProcess($cmd)
-    {
-        $process = new Process($cmd);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+        return trim($process->getOutput());
     }
 
     /**
@@ -80,7 +70,13 @@ class ScriptHandler
         $dumper = new Dumper();
 
         file_put_contents(self::$sfAppDir . '/config/version.yml', $dumper->dump(
-            array('parameters' => array('assets_version' => $version)),
+            array('parameters' => array(
+                'assets_version'      => $version,
+                'build_vcs'           => 'git',
+                'build_commit_tag'    => self::$commitTag,
+                'build_commit_hash'   => self::$commitHash,
+                'build_commit_branch' => self::$branch
+            )),
             self::$yamlMode
         ));
     }
