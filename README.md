@@ -25,6 +25,9 @@ composer.json
     "scripts": {
         "post-install-cmd": [
             "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
+        ],
+        "post-update-cmd": [
+            "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ]
     }
     
