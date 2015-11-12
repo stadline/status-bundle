@@ -2,6 +2,7 @@
 
 namespace StadLine\StatusPageBundle\DependencyInjection;
 
+use StadLine\StatusPageBundle\StadLineStatusPageBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -21,6 +22,8 @@ class StadLineStatusPageExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('status_page.externals_api', $config['externals_api']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

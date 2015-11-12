@@ -10,23 +10,22 @@ class RequirementCompilerPass implements CompilerPassInterface
 {
 	public function process(ContainerBuilder $container)
 	{
-		if (!$container->hasDefinition("stadline_status_page.requirement.collections"))
-		{
+		if (!$container->hasDefinition("stadline_status_page.requirement.collections")) {
 			return;
 		}
 	
 		$definition = $container->getDefinition(
-				'stadline_status_page.requirement.collections'
+			'stadline_status_page.requirement.collections'
 		);
 		
 		$taggedServices = $container->findTaggedServiceIds(
-				'status_page.requirement'
+			'status_page.requirement'
 		);
 		
 		foreach ($taggedServices as $id => $attributes) {
 			$definition->addMethodCall(
-					'addCollection',
-					array(new Reference($id))
+				'addCollection',
+				array(new Reference($id))
 			);
 		}
 	}

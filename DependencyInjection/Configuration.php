@@ -18,12 +18,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('stadline_status_page');
+        $rootNode = $treeBuilder->root('stad_line_status_page');
 
         $rootNode
             ->children()
-                ->variableNode('git_version_file')
-                    ->defaultValue('.git_version')
+                ->arrayNode('externals_api')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('name')->end()
+                            ->scalarNode('url')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
