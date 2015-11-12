@@ -24,5 +24,12 @@ class StadLineStatusPageExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $appRootDir = $container->getParameter('kernel.root_dir');
+
+        if (file_exists($appRootDir . '/config/version.yml')) {
+            $appLoader = new Loader\YamlFileLoader($container, new FileLocator($appRootDir . '/config'));
+            $appLoader->load('version.yml');
+        }
     }
 }

@@ -30,11 +30,6 @@ composer.json
             "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ]
     }
-    
-config.yml
-
-    imports:
-        - { resource: version.yml }
 
 A propos
 --------

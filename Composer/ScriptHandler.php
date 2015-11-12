@@ -66,6 +66,11 @@ class ScriptHandler
     private static function createVersionFile($version)
     {
         $dumper = new Dumper();
+        $filename = self::$sfAppDir . '/config/version.yml';
+
+        if (!file_exists($filename)) {
+            fopen($filename, 'w+');
+        }
 
         file_put_contents(self::$sfAppDir . '/config/version.yml', $dumper->dump(
             array('parameters' => array(
