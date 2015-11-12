@@ -12,14 +12,14 @@ class ApiRequirements extends RequirementCollection
 {
     const STATUS_CODE_OK = 200;
 
-    public function __construct($container, Client $client)
+    public function __construct($container)
     {
         $apiList = $container->getParameter('status_page.externals_api');
 
         foreach ($apiList as $parameters) {
             $apiStatus = ApiStatusFactory::create($parameters);
 
-            $apiStatus->setIsAvailable($this->getAvailability($apiStatus, $client));
+            $apiStatus->setIsAvailable($this->getAvailability($apiStatus, $container->get('guzzle.client')));
             $this->addRequirement($apiStatus->isAvailable(), $apiStatus->getName(), $apiStatus->isAvailable() ? '200' : 'NONE');
         }
     }
