@@ -31,6 +31,18 @@ composer.json
         ]
     }
 
+config.yml (Configuration de référence).
+
+    stad_line_status_page: ~
+
+#### Ou
+
+config.yml (Si vous souhaitez vérifier la disponibilité d'api externes).
+
+    stad_line_status_page:
+        externals_api:
+            - { name: Mandrill, url: http://status.mandrillapp.com }
+
 A propos
 --------
 
