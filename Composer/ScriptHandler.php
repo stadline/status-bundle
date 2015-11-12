@@ -31,13 +31,18 @@ class ScriptHandler
      */
     public static function buildVersion(Event $event)
     {
-        $extras = $event->getComposer()->getPackage()->getExtra();
-        self::$sfAppDir = $extras['symfony-app-dir'];
-        self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
-        self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
-        self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
+        try {
+            $extras = $event->getComposer()->getPackage()->getExtra();
+            self::$sfAppDir = $extras['symfony-app-dir'];
+            self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
+            self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
+            self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
 
-        self::createVersionFile(self::$commitTag);
+            self::createVersionFile(self::$commitTag);
+        }
+        catch (ProcessFailedException $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
