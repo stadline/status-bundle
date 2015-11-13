@@ -1,34 +1,27 @@
 <?php
 
-namespace StadLine\StatusPageBundle\ApiStatus;
+namespace Stadline\StatusPageBundle\ApiStatus;
+
+use Guzzle\Http\Client;
 
 class PublicApiStatusPage implements ApiStatusInterface
 {
+    const STATUS_CODE_OK = 200;
+
     /** @var string */
     private $url;
 
     /** @var string */
     private $name;
 
-    /** @var boolean */
-    private $isAvailable;
-
     /** @var string */
     private $exceptionMessage;
 
-    public function __construct()
+    public function __construct(Client $client, $name, $url)
     {
-        $this->isAvailable = false;
-    }
-
-    /**
-     * Sets is available.
-     *
-     * @param boolean
-     */
-    public function setIsAvailable($isAvailable)
-    {
-        return $this->isAvailable = $isAvailable;
+        $this->client = $client;
+        $this->name = $name;
+        $this->url = $url;
     }
 
     /**
@@ -38,15 +31,18 @@ class PublicApiStatusPage implements ApiStatusInterface
      */
     public function IsAvailable()
     {
-        return $this->isAvailable;
-    }
+        try {
+            $request = $this->client->createRequest('GET', $this->getUrl());
+            $response = $this->client->send($request);
 
-    /**
-     * Sets the url.
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
+            if ($response->getStatusCode() === self::STATUS_CODE_OK) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            $this->exceptionMessage = $e->getMessage();
+
+            return false;
+        }
     }
 
     /**
@@ -57,16 +53,6 @@ class PublicApiStatusPage implements ApiStatusInterface
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     /**
@@ -87,15 +73,5 @@ class PublicApiStatusPage implements ApiStatusInterface
     public function getExceptionMessage()
     {
         return $this->exceptionMessage;
-    }
-
-    /**
-     * Sets the exception messsage.
-     *
-     * @param string
-     */
-    public function setExceptionMessage($exceptionMessage)
-    {
-        $this->exceptionMessage = $exceptionMessage;
     }
 }

@@ -1,13 +1,12 @@
 <?php
 
-namespace StadLine\StatusPageBundle;
+namespace Stadline\StatusPageBundle;
 
+use Stadline\StatusPageBundle\DependencyInjection\Compiler\RequirementCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use StadLine\StatusPageBundle\DependencyInjection\Compiler\RequirementCompilerPass;
-
-class StadLineStatusPageBundle extends Bundle
+class StadlineStatusPageBundle extends Bundle
 {
 	public function build(ContainerBuilder $container)
 	{

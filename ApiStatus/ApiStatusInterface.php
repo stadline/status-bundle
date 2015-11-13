@@ -1,6 +1,6 @@
 <?php
 
-namespace StadLine\StatusPageBundle\ApiStatus;
+namespace Stadline\StatusPageBundle\ApiStatus;
 
 /**
  * The api status interface.
@@ -21,4 +21,9 @@ interface ApiStatusInterface
      * @return return
      */
     public function getName();
+
+    /**
+     * @return string
+     */
+    public function getExceptionMessage();
 }

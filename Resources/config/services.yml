@@ -1,8 +1,9 @@
 parameters:
-    stadline_status_page.symfony.requirement.class: StadLine\StatusPageBundle\Requirements\SymfonyRequirements
-    stadline_status_page.requirement.collections.class: StadLine\StatusPageBundle\Requirements\RequirementCollections
-    stadline_status_page.version.requirement.class: StadLine\StatusPageBundle\Requirements\VersionRequirements
-    stadline_status_page.api.requirement.class: StadLine\StatusPageBundle\Requirements\ApiRequirements
+    stadline_status_page.symfony.requirement.class: Stadline\StatusPageBundle\Requirements\SymfonyRequirements
+    stadline_status_page.requirement.collections.class: Stadline\StatusPageBundle\Requirements\RequirementCollections
+    stadline_status_page.version.requirement.class: Stadline\StatusPageBundle\Requirements\VersionRequirements
+    stadline_status_page.api.requirement.class: Stadline\StatusPageBundle\Requirements\ApiRequirements
+    stadline_status_page.api.factory.class: Stadline\StatusPageBundle\ApiStatus\ApiStatusFactory
 
 services:
     stadline_status_page.version.requirement:
@@ -24,3 +25,8 @@ services:
         arguments: [@service_container]
         tags:
           - { name: status_page.requirement}
+
+    stadline_status_page.api.factory:
+        class: %stadline_status_page.api.factory.class%
+        calls:
+            - [setClient, ["@guzzle.client"]]

@@ -1,6 +1,6 @@
 <?php
 
-namespace StadLine\StatusPageBundle\DependencyInjection;
+namespace Stadline\StatusPageBundle\DependencyInjection;
 
 use StadLine\StatusPageBundle\StadLineStatusPageBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class StadLineStatusPageExtension extends Extension
+class StadlineStatusPageExtension extends Extension
 {
     /**
      * {@inheritDoc}

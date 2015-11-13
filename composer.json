@@ -18,10 +18,10 @@
     },
     "autoload" : {
         "psr-0" : {
-            "StadLine\\StatusPageBundle" : ""
+            "Stadline\\StatusPageBundle" : ""
         }
     },
-    "target-dir" : "StadLine/StatusPageBundle",
+    "target-dir" : "Stadline/StatusPageBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"

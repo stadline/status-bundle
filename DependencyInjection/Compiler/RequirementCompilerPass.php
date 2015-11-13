@@ -1,6 +1,6 @@
 <?php 
 
-namespace StadLine\StatusPageBundle\DependencyInjection\Compiler;
+namespace Stadline\StatusPageBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

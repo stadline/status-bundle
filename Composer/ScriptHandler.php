@@ -1,6 +1,6 @@
 <?php
 
-namespace StadLine\StatusPageBundle\Composer;
+namespace Stadline\StatusPageBundle\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Process\Exception\ProcessFailedException;

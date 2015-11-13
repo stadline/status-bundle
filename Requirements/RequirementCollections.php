@@ -1,6 +1,6 @@
 <?php 
 
-namespace StadLine\StatusPageBundle\Requirements;
+namespace Stadline\StatusPageBundle\Requirements;
 
 class RequirementCollections implements \IteratorAggregate
 {

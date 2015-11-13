@@ -1,4 +1,4 @@
-StadLineStatusPageBundle
+StadlineStatusPageBundle
 ==============================
 
 Installation:
@@ -6,42 +6,30 @@ Installation:
 
 app/AppKernel.php
 
-    new StadLine\StatusPageBundle\StadLineStatusPageBundle()
+    new Stadline\StatusPageBundle\StadlineStatusPageBundle()
 
 app/config/routing.yml
 
     stadline_status_page:
-        resource: "@StadLineStatusPageBundle/Resources/config/routing.yml"
+        resource: "@StadlineStatusPageBundle/Resources/config/routing.yml"
         prefix:   /
 
 app/config/assetic.yml
 
     assetic:
         bundles:
-            - StadLineStatusPageBundle
+            - StadlineStatusPageBundle
 
 composer.json
 
     "scripts": {
         "post-install-cmd": [
-            "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
+            "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ],
         "post-update-cmd": [
-            "StadLine\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
+            "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ]
     }
-
-config.yml (Configuration de référence).
-
-    stad_line_status_page: ~
-
-#### Ou
-
-config.yml (Si vous souhaitez vérifier la disponibilité d'api externes).
-
-    stad_line_status_page:
-        externals_api:
-            - { name: Mandrill, url: http://status.mandrillapp.com }
 
 A propos
 --------
@@ -59,7 +47,7 @@ Depuis votre bundle, créez une classe de prérequis
     
     namespace MyCustomBundle\Requirements;
     
-    use StadLine\StatusPageBundle\Requirements\RequirementCollection;
+    use Stadline\StatusPageBundle\Requirements\RequirementCollection;
     
     class CustomRequirements extends RequirementCollection
     {

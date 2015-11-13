@@ -1,9 +1,13 @@
 <?php
 
-namespace StadLine\StatusPageBundle\ApiStatus;
+namespace Stadline\StatusPageBundle\ApiStatus;
 
-abstract class ApiStatusFactory
+use Guzzle\Http\Client;
+
+class ApiStatusFactory
 {
+    private static $client;
+
     /**
      * The factory creates an instance of ApiStatusInterface;
      *
@@ -13,11 +17,17 @@ abstract class ApiStatusFactory
     public static function create($parameters)
     {
         if ($parameters['url'] && $parameters['name']) {
-            $api = new PublicApiStatusPage();
-            $api->setName($parameters['name']);
-            $api->setUrl($parameters['url']);
-
-            return $api;
+            return new PublicApiStatusPage(self::$client, $parameters['name'], $parameters['url']);
         }
+    }
+
+    /**
+     * Sets the client.
+     *
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        self::$client =$client;
     }
 }

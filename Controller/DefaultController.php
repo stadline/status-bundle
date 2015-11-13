@@ -1,6 +1,6 @@
 <?php
 
-namespace StadLine\StatusPageBundle\Controller;
+namespace Stadline\StatusPageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Yaml\Dumper;

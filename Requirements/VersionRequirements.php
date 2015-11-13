@@ -1,8 +1,8 @@
 <?php
 
-namespace StadLine\StatusPageBundle\Requirements;
+namespace Stadline\StatusPageBundle\Requirements;
 
-use StadLine\StatusPageBundle\Requirements\RequirementCollection;
+use Stadline\StatusPageBundle\Requirements\RequirementCollection;
 
 class VersionRequirements extends RequirementCollection
 {
