@@ -30,6 +30,18 @@ composer.json
             "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ]
     }
+    
+config.yml (Configuration de référence)
+
+    stadline_status_page: ~
+    
+#### Ou
+
+config.yml (Pour vérifier la disponibilité d'une API externe).
+
+    stadline_status_page:
+        externals_api:
+            - { name: Mandrill, url: http://status.mandrillapp.com }
 
 A propos
 --------
