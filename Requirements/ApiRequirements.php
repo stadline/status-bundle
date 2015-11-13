@@ -20,11 +20,15 @@ class ApiRequirements extends RequirementCollection
             $apiStatus = ApiStatusFactory::create($parameters);
 
             $apiStatus->setIsAvailable($this->getAvailability($apiStatus, $container->get('guzzle.client')));
-            $this->addRequirement($apiStatus->isAvailable(), $apiStatus->getName(), $apiStatus->isAvailable() ? '200' : 'NONE');
+            $this->addRequirement(
+                $apiStatus->isAvailable(),
+                $apiStatus->getName(),
+                $apiStatus->isAvailable() ? self::STATUS_CODE_OK : $apiStatus->getExceptionMessage()
+            );
         }
     }
 
-    public function getAvailability(ApiStatusInterface $apiStatus, $client)
+    public function getAvailability(ApiStatusInterface &$apiStatus, $client)
     {
         try {
             $request = $client->createRequest('GET',$apiStatus->getUrl());
@@ -34,6 +38,8 @@ class ApiRequirements extends RequirementCollection
                 return true;
             }
         } catch (\Exception $e) {
+            $apiStatus->setExceptionMessage($e->getMessage());
+
             return false;
         }
     }

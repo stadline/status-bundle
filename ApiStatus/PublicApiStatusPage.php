@@ -4,14 +4,17 @@ namespace StadLine\StatusPageBundle\ApiStatus;
 
 class PublicApiStatusPage implements ApiStatusInterface
 {
-    /** @var  string */
+    /** @var string */
     private $url;
 
-    /** @var  string */
+    /** @var string */
     private $name;
 
-    /** @var  boolean */
+    /** @var boolean */
     private $isAvailable;
+
+    /** @var string */
+    private $exceptionMessage;
 
     public function __construct()
     {
@@ -74,5 +77,25 @@ class PublicApiStatusPage implements ApiStatusInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Gets the exception message.
+     *
+     * @return string
+     */
+    public function getExceptionMessage()
+    {
+        return $this->exceptionMessage;
+    }
+
+    /**
+     * Sets the exception messsage.
+     *
+     * @param string
+     */
+    public function setExceptionMessage($exceptionMessage)
+    {
+        $this->exceptionMessage = $exceptionMessage;
     }
 }
