@@ -13,7 +13,7 @@ class DefaultController extends Controller
 
     	$collections = $this->get('stadline_status_page.requirement.collections');
     	
-        $response = $this->render('StadLineStatusPageBundle:Default:index.html.twig', array(
+        $response = $this->render('StadlineStatusPageBundle:Default:index.html.twig', array(
             'collections' => $collections,
             'title' => "Project :: status page"
         ));
@@ -37,7 +37,7 @@ class DefaultController extends Controller
         $yaml = new Dumper();
         $params = $yaml->dump($params, 5);
         
-        $response = $this->render('StadLineStatusPageBundle:Default:exposeParams.html.twig', array(
+        $response = $this->render('StadlineStatusPageBundle:Default:exposeParams.html.twig', array(
             'params' => $params,
             'title' => "Project :: parameters status page"
         ));
