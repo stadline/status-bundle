@@ -30,27 +30,4 @@ class StatusController extends Controller
 
         return $response;
     }
-
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function exposeParamsAction(Request $request)
-    {
-        if ($request->get('full', false)) {
-            $params = $this->container->getParameterBag()->all();
-        } else {
-            $params = $this->get("sensio_distribution.webconfigurator")->getParameters();
-        }
-
-        $yamlDumper = new Dumper();
-        $params = $yamlDumper->dump($params, 5);
-
-        $response = $this->render('StadlineStatusPageBundle:Default:exposeParams.html.twig', array(
-            'params' => $params,
-            'title' => "Project :: parameters status page"
-        ));
-
-        return $response;
-    }
 }
