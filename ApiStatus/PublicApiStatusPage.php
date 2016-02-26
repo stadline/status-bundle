@@ -2,7 +2,7 @@
 
 namespace Stadline\StatusPageBundle\ApiStatus;
 
-use Guzzle\Http\Client;
+use Exception;
 
 class PublicApiStatusPage implements ApiStatusInterface
 {
@@ -14,12 +14,18 @@ class PublicApiStatusPage implements ApiStatusInterface
     /** @var string */
     private $name;
 
+    /** @var int */
+    private $statusCode;
+
     /** @var string */
     private $exceptionMessage;
 
-    public function __construct(Client $client, $name, $url)
+    /**
+     * @param string $name
+     * @param string $url
+     */
+    public function __construct($name, $url)
     {
-        $this->client = $client;
         $this->name = $name;
         $this->url = $url;
     }
@@ -32,16 +38,27 @@ class PublicApiStatusPage implements ApiStatusInterface
     public function IsAvailable()
     {
         try {
-            $request = $this->client->createRequest('GET', $this->getUrl());
-            $response = $this->client->send($request);
-
-            if ($response->getStatusCode() === self::STATUS_CODE_OK) {
-                return true;
-            }
+            $this->doRequest();
+            return true;
         } catch (\Exception $e) {
             $this->exceptionMessage = $e->getMessage();
+        }
+        return false;
+    }
 
-            return false;
+    /**
+     * Request API Url and throw exception if code not 200
+     * @throws Exception
+     */
+    private function doRequest()
+    {
+        $headers = @get_headers($this->url);
+        if (!$headers) {
+            throw new Exception("Could not resolve host");
+        }
+        $this->statusCode = substr($headers[0], 9, 3);
+        if ($this->statusCode != self::STATUS_CODE_OK) {
+            throw new Exception($headers[0]);
         }
     }
 

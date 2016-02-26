@@ -1,8 +1,10 @@
 StadlineStatusPageBundle
 ==============================
 
+Compatible uniquement Symfony2 (testé Symfony 2.8.x)
+
 Installation:
-------------
+-------------
 
 app/AppKernel.php
 
@@ -13,12 +15,6 @@ app/config/routing.yml
     stadline_status_page:
         resource: "@StadlineStatusPageBundle/Resources/config/routing.yml"
         prefix:   /
-
-app/config/assetic.yml
-
-    assetic:
-        bundles:
-            - StadlineStatusPageBundle
 
 composer.json
 
@@ -31,17 +27,29 @@ composer.json
         ]
     }
     
-config.yml (Configuration de référence)
-
-    stadline_status_page: ~
+    "require": {
+        "stadline/status-bundle": "dev-master"
+    }
     
-#### Ou
-
-config.yml (Pour vérifier la disponibilité d'une API externe).
-
-    stadline_status_page:
-        externals_api:
-            - { name: Mandrill, url: http://status.mandrillapp.com }
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/stadline/status-bundle.git"
+        }
+    ]
+    
+    # Symfony 2
+    "autoload": {
+        "classmap": [
+            "app/SymfonyRequirements.php"
+        ]
+    }
+   
+.gitignore (à la racine du projet)
+    
+    # version file
+    /app/config/version.yml
+    
 
 A propos
 --------
@@ -58,17 +66,17 @@ Depuis votre bundle, créez une classe de prérequis
     // src/My/CustomBundle/Requirements/CustomRequirements.php
     
     namespace MyCustomBundle\Requirements;
-    
-    use Stadline\StatusPageBundle\Requirements\RequirementCollection;
-    
-    class CustomRequirements extends RequirementCollection
+        
+    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface
+        
+    class CustomRequirements extends \RequirementCollection implements RequirementCollectionInterface
     {
         public function __construct()
         {
             $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>");
             $this->addRecommendation(1 == 1, "True recommendation succeed", "It's OK");
         }
-    
+        
         public function getName()
         {
             return "Custom";

@@ -2,7 +2,6 @@
 
 namespace Stadline\StatusPageBundle\DependencyInjection;
 
-use StadLine\StatusPageBundle\StadLineStatusPageBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;

@@ -1,7 +1,7 @@
 {
     "name": "stadline/status-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 bundle",
+    "description": "Add status page",
     "license": "proprietary",
     "authors": [
         {
@@ -9,12 +9,14 @@
             "email": "olivier.bialorucki@stadline.com"
         }
     ],
-    "license" : [
-        "MIT"
-    ],
     "require": {
-        "symfony/assetic-bundle": "~2.3",
-        "braincrafted/bootstrap-bundle": "~2.0"
+        "symfony/event-dispatcher": "~2.7",
+        "symfony/yaml": "~2.7",
+        "symfony/framework-bundle": "~2.7"
+    },
+    "require-dev": {
+    },
+    "suggest": {
     },
     "autoload" : {
         "psr-0" : {

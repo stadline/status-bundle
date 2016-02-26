@@ -2,11 +2,14 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-use Stadline\StatusPageBundle\Requirements\RequirementCollection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class VersionRequirements extends RequirementCollection
+class VersionRequirements extends \RequirementCollection implements RequirementCollectionInterface
 {
-    public function __construct($container)
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
         if ($container->hasParameter('build_commit_tag')) {
             $tag = $container->getParameter('build_commit_tag');
@@ -25,6 +28,9 @@ class VersionRequirements extends RequirementCollection
         $this->addRequirement(isset($branch), "Git Branch", isset($branch) ? $branch : 'NONE');
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return "Version";

@@ -1,32 +1,26 @@
 parameters:
-    stadline_status_page.symfony.requirement.class: Stadline\StatusPageBundle\Requirements\SymfonyRequirements
-    stadline_status_page.requirement.collections.class: Stadline\StatusPageBundle\Requirements\RequirementCollections
-    stadline_status_page.version.requirement.class: Stadline\StatusPageBundle\Requirements\VersionRequirements
-    stadline_status_page.api.requirement.class: Stadline\StatusPageBundle\Requirements\ApiRequirements
-    stadline_status_page.api.factory.class: Stadline\StatusPageBundle\ApiStatus\ApiStatusFactory
+    stadline_status_page.symfony.requirement.class: "Stadline\StatusPageBundle\Requirements\SymfonyRequirements"
+    stadline_status_page.requirement.collections.class: "Stadline\StatusPageBundle\Requirements\RequirementCollections"
+    stadline_status_page.version.requirement.class: "Stadline\StatusPageBundle\Requirements\VersionRequirements"
+    stadline_status_page.api.requirement.class: "Stadline\StatusPageBundle\Requirements\ApiRequirements"
 
 services:
     stadline_status_page.version.requirement:
-        class: %stadline_status_page.version.requirement.class%
+        class: "%stadline_status_page.version.requirement.class%"
         arguments: ['@service_container']
         tags:
-          - { name: status_page.requirement}
+          - { name: "status_page.requirement" }
 
     stadline_status_page.requirement.collections:
-        class: %stadline_status_page.requirement.collections.class%
+        class: "%stadline_status_page.requirement.collections.class%"
 
     stadline_status_page.symfony.requirement:
-        class: %stadline_status_page.symfony.requirement.class%
+        class: "%stadline_status_page.symfony.requirement.class%"
         tags:
-          - { name: status_page.requirement}
+          - { name: "status_page.requirement" }
 
     stadline_status_page.api.requirement:
-        class: %stadline_status_page.api.requirement.class%
-        arguments: ['@service_container']
+        class: "%stadline_status_page.api.requirement.class%"
+        arguments: ["@service_container"]
         tags:
-          - { name: status_page.requirement}
-
-    stadline_status_page.api.factory:
-        class: %stadline_status_page.api.factory.class%
-        calls:
-            - [setClient, ['@guzzle.client']]
+          - { name: "status_page.requirement" }

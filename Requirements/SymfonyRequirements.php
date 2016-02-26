@@ -2,12 +2,13 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-require_once '../app/SymfonyRequirements.php';
-
-class SymfonyRequirements extends \SymfonyRequirements
+class SymfonyRequirements extends \SymfonyRequirements implements RequirementCollectionInterface
 {
+    /**
+     * @return string
+     */
     public function getName()
     {
-        return "Symfony 2";
+        return "Symfony";
     }
 }

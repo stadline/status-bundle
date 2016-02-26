@@ -4,9 +4,15 @@ namespace Stadline\StatusPageBundle\Requirements;
 
 class RequirementCollections implements \IteratorAggregate
 {
+    /**
+     * @var RequirementCollectionInterface[]
+     */
 	private $collections = array();
-	
-	public function addCollection($collection)
+
+    /**
+     * @param RequirementCollectionInterface $collection
+     */
+	public function addCollection(RequirementCollectionInterface $collection)
 	{
 		$this->collections[] = $collection;
 	}
@@ -14,7 +20,7 @@ class RequirementCollections implements \IteratorAggregate
     /**
      * Gets the current RequirementCollections as an Iterator.
      *
-     * @return Traversable A Traversable interface
+     * @return \Traversable A Traversable interface
      */
     public function getIterator()
     {
@@ -30,10 +36,8 @@ class RequirementCollections implements \IteratorAggregate
     {
         $array = array();
         
-        foreach ($this->collections as $collection)
-        {
-            if (count($failed = $collection->getFailedRequirements()))
-            {
+        foreach ($this->collections as $collection) {
+            if (count($failed = $collection->getFailedRequirements())) {
                 $array[$collection->getName()] = $failed;
             }
         }
@@ -50,10 +54,8 @@ class RequirementCollections implements \IteratorAggregate
     {
         $array = array();
     
-        foreach ($this->collections as $collection)
-        {
-            if (count($failed = $collection->getFailedRecommendations()))
-            {
+        foreach ($this->collections as $collection) {
+            if (count($failed = $collection->getFailedRecommendations())) {
                 $array[$collection->getName()] = $failed;
             }
         }
@@ -61,48 +63,58 @@ class RequirementCollections implements \IteratorAggregate
         return $array;
     }
 
+    /**
+     * @param int $ignoreWarnings
+     * @return bool
+     */
     public function hasIssue($ignoreWarnings = 0)
     {
-       
-        if ($this->countFailedRequirements()+($ignoreWarnings?0:1)*$this->countFailedRecommendations() > 0)
-        {
+        if ($this->countFailedRequirements()+($ignoreWarnings?0:1)*$this->countFailedRecommendations() > 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
+    /**
+     * @return int
+     */
     public function countRequirements()
     {
         $count = 0;
         
-        foreach ($this->collections as $collection)
-        {
+        foreach ($this->collections as $collection) {
             $count += count($collection->getRequirements());
         }
         
         return $count;
     }
 
+    /**
+     * @return int
+     */
     public function countRecommendations()
     {
         $count = 0;
     
-        foreach ($this->collections as $collection)
-        {
+        foreach ($this->collections as $collection) {
             $count += count($collection->getRecommendations());
         }
     
         return $count;
     }
-    
+
+    /**
+     * @return int
+     */
     public function countFailedRequirements()
     {
         return count($this->getFailedRequirements(), COUNT_RECURSIVE) - count($this->getFailedRequirements());
     }
 
+    /**
+     * @return int
+     */
     public function countFailedRecommendations()
     {
         return count($this->getFailedRecommendations(), COUNT_RECURSIVE) - count($this->getFailedRecommendations());

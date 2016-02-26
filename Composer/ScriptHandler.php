@@ -35,12 +35,23 @@ class ScriptHandler
             $extras = $event->getComposer()->getPackage()->getExtra();
             self::$sfAppDir = $extras['symfony-app-dir'];
             self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
-            self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
+            // get commit tag if exists
+            try {
+                self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
+            } catch (ProcessFailedException $e) {
+                // check special case : no tags in repository
+                if (strstr($e->getMessage(), "No names found")) {
+                    // no tags found
+                    self::$commitTag = "no tag";
+                } else {
+                    // other error
+                    throw $e;
+                }
+            }
             self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
 
-            self::createVersionFile(self::$commitTag);
-        }
-        catch (ProcessFailedException $e) {
+            self::createVersionFile();
+        } catch (ProcessFailedException $e) {
             echo $e->getMessage();
         }
     }
@@ -48,8 +59,9 @@ class ScriptHandler
     /**
      * Get commit hash.
      *
-     * @param string
+     * @param string $cmd
      * @return string
+     * @throws ProcessFailedException
      */
     private static function getProcessOutPut($cmd)
     {
@@ -65,10 +77,8 @@ class ScriptHandler
 
     /**
      * Create a yaml version file.
-     *
-     * @param version
      */
-    private static function createVersionFile($version)
+    private static function createVersionFile()
     {
         $dumper = new Dumper();
         $filename = self::$sfAppDir . '/config/version.yml';
@@ -79,7 +89,6 @@ class ScriptHandler
 
         file_put_contents(self::$sfAppDir . '/config/version.yml', $dumper->dump(
             array('parameters' => array(
-                'assets_version'      => $version,
                 'build_vcs'           => 'git',
                 'build_commit_tag'    => self::$commitTag,
                 'build_commit_hash'   => self::$commitHash,

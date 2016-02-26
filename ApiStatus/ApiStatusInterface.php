@@ -18,7 +18,7 @@ interface ApiStatusInterface
     public function isAvailable();
 
     /**
-     * @return return
+     * @return string
      */
     public function getName();
 

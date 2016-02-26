@@ -4,44 +4,53 @@ namespace Stadline\StatusPageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class StatusController extends Controller
 {
-    public function indexAction()
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function indexAction(Request $request)
     {
-        $ignoreWarning = $this->getRequest()->query->get('ignore-warnings', 0);
+        $ignoreWarning = $request->query->get('ignore-warnings', 0);
 
-    	$collections = $this->get('stadline_status_page.requirement.collections');
-    	
+        $collections = $this->get('stadline_status_page.requirement.collections');
+
         $response = $this->render('StadlineStatusPageBundle:Default:index.html.twig', array(
             'collections' => $collections,
             'title' => "Project :: status page"
         ));
-        
-        if ($collections->hasIssue($ignoreWarning))
-        {
+
+        if ($collections->hasIssue($ignoreWarning)) {
             $response->setStatusCode("501");
         }
 
         return $response;
     }
-    
-    public function exposeParamsAction()
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function exposeParamsAction(Request $request)
     {
-        if($this->getRequest()->get('full', false)) {
+        if ($request->get('full', false)) {
             $params = $this->container->getParameterBag()->all();
         } else {
             $params = $this->get("sensio_distribution.webconfigurator")->getParameters();
         }
-        
-        $yaml = new Dumper();
-        $params = $yaml->dump($params, 5);
-        
+
+        $yamlDumper = new Dumper();
+        $params = $yamlDumper->dump($params, 5);
+
         $response = $this->render('StadlineStatusPageBundle:Default:exposeParams.html.twig', array(
             'params' => $params,
             'title' => "Project :: parameters status page"
         ));
-        
+
         return $response;
     }
 }
