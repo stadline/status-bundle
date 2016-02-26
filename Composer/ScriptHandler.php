@@ -34,22 +34,9 @@ class ScriptHandler
         try {
             $extras = $event->getComposer()->getPackage()->getExtra();
             self::$sfAppDir = $extras['symfony-app-dir'];
-            self::$commitHash = self::getProcessOutPut('git log --pretty=format:"%h" -n 1');
-            // get commit tag if exists
-            try {
-                self::$commitTag = self::getProcessOutPut('git describe --abbrev=0 --tags');
-            } catch (ProcessFailedException $e) {
-                // check special case : no tags in repository
-                if (strstr($e->getMessage(), "No names found")) {
-                    // no tags found
-                    self::$commitTag = "no tag";
-                } else {
-                    // other error
-                    throw $e;
-                }
-            }
-            self::$branch = self::getProcessOutPut('git rev-parse --abbrev-ref HEAD');
-
+            self::$commitHash = self::getGitProcessOutPut('git log --pretty=format:"%h" -n 1');
+            self::$commitTag = self::getGitProcessOutPut('git describe --abbrev=0 --tags');
+            self::$branch = self::getGitProcessOutPut('git rev-parse --abbrev-ref HEAD');
             self::createVersionFile();
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
@@ -57,19 +44,19 @@ class ScriptHandler
     }
 
     /**
-     * Get commit hash.
+     * Get information from git commandline
      *
      * @param string $cmd
      * @return string
      * @throws ProcessFailedException
      */
-    private static function getProcessOutPut($cmd)
+    private static function getGitProcessOutPut($cmd)
     {
         $process = new Process($cmd);
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            return null;
         }
 
         return trim($process->getOutput());
