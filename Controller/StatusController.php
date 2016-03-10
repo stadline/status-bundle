@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 class StatusController extends Controller
 {
     /**
+     * The index action.
+     *
      * @param Request $request
      * @return Response
      */

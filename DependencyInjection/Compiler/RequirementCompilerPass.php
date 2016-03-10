@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\Reference;
 class RequirementCompilerPass implements CompilerPassInterface
 {
     /**
+     * Process the requirement compiler pass.
+     *
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
@@ -17,13 +19,9 @@ class RequirementCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition(
-            'stadline_status_page.requirement.collections'
-        );
+        $definition = $container->getDefinition('stadline_status_page.requirement.collections');
 
-        $taggedServices = $container->findTaggedServiceIds(
-            'status_page.requirement'
-        );
+        $taggedServices = $container->findTaggedServiceIds('status_page.requirement');
 
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall(

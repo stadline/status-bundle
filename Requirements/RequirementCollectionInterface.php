@@ -6,11 +6,14 @@ interface RequirementCollectionInterface
 {
     /**
      * Returns the name of requirements collection
+     *
      * @return string
      */
     public function getName();
 
     /**
+     * Add a requirement.
+     *
      * @param $fulfilled
      * @param $testMessage
      * @param $helpHtml

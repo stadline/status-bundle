@@ -10,6 +10,8 @@ class RequirementCollections implements \IteratorAggregate
 	private $collections = array();
 
     /**
+     * Add a collection.
+     *
      * @param RequirementCollectionInterface $collection
      */
 	public function addCollection(RequirementCollectionInterface $collection)
@@ -64,6 +66,8 @@ class RequirementCollections implements \IteratorAggregate
     }
 
     /**
+     * Checks if the requirement collection has issue.
+     *
      * @param int $ignoreWarnings
      * @return bool
      */
@@ -77,6 +81,8 @@ class RequirementCollections implements \IteratorAggregate
     }
 
     /**
+     * Count the number of requirements.
+     *
      * @return int
      */
     public function countRequirements()
@@ -91,6 +97,8 @@ class RequirementCollections implements \IteratorAggregate
     }
 
     /**
+     * Count the number of recommendations.
+     *
      * @return int
      */
     public function countRecommendations()
@@ -105,6 +113,8 @@ class RequirementCollections implements \IteratorAggregate
     }
 
     /**
+     * Count the number of failed requirements.
+     *
      * @return int
      */
     public function countFailedRequirements()
@@ -113,6 +123,8 @@ class RequirementCollections implements \IteratorAggregate
     }
 
     /**
+     * Count the number of failed recommendations.
+     *
      * @return int
      */
     public function countFailedRecommendations()
