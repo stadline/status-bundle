@@ -2,6 +2,8 @@
 
 namespace Stadline\StatusPageBundle\Handler;
 
+use Stadline\StatusPageBundle\Requirements\RequirementCollections;
+
 class StatusCodeHandler
 {
     /**
@@ -22,13 +24,30 @@ class StatusCodeHandler
     }
 
     /**
+     * @param RequirementCollections $collections
+     * @param int $ignoreWarning
+     * @return array
+     */
+    public function getRequirementsCollections(RequirementCollections $collections, $ignoreWarning)
+    {
+        $failedRequirementsCollections = $collections->getFailedRequirements();
+
+        if (!$ignoreWarning) {
+            $failedRecommendationsCollections = $collections->getFailedRecommendations();
+            $failedRequirementsCollections = array_merge_recursive($failedRequirementsCollections, $failedRecommendationsCollections);
+        }
+
+        return $failedRequirementsCollections;
+    }
+
+    /**
      * Get the most critical status code of a requirement
      *
      * @param string $collectionName
      * @param array $requirements
      * @return int (500, 409 or 417)
      */
-    protected function getMostCriticalStatusCode($collectionName, $requirements)
+    protected function getMostCriticalStatusCode($collectionName, array $requirements)
     {
         if ($collectionName === "Symfony") {
             return 500;
@@ -55,7 +74,7 @@ class StatusCodeHandler
      * @param array $terms
      * @return int
      */
-    protected function getStatusCode($statusCode, $terms)
+    protected function getStatusCode($statusCode, array $terms)
     {
         // priority is 500, 409, 417 for status codes
         switch ($terms) {

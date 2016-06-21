@@ -26,16 +26,11 @@ class StatusController extends Controller
         ));
 
         if ($collections->hasIssue($ignoreWarning)) {
-            $failedRequirementsCollections = $collections->getFailedRequirements();
-
-            if (!$ignoreWarning) {
-                $failedRecommendationsCollections = $collections->getFailedRecommendations();
-                $failedRequirementsCollections = array_merge_recursive($failedRequirementsCollections, $failedRecommendationsCollections);
-            }
-
             $statusCodeHandler = $this->get('stadline_status_page.statuscode.handler');
+            $failedRequirementsArray = $statusCodeHandler->getRequirementsArray($collections, $ignoreWarning);
+            $statusCode = $statusCodeHandler->defineMostCriticalStatusCode($failedRequirementsArray);
 
-            $response->setStatusCode($statusCodeHandler->defineMostCriticalStatusCode($failedRequirementsCollections));
+            $response->setStatusCode($statusCode);
         }
 
         return $response;

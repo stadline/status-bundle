@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class StatusCodeHandlerTest extends WebTestCase
 {
     protected $statusCodeHandlerMock;
+    protected $requirementCollectionsMock;
 
     public function setUp()
     {
@@ -23,6 +24,7 @@ class StatusCodeHandlerTest extends WebTestCase
     protected function initMock()
     {
         $this->statusCodeHandlerMock = m::mock("Stadline\StatusPageBundle\Handler\StatusCodeHandler")->shouldAllowMockingProtectedMethods()->makePartial();
+        $this->requirementCollectionsMock = m::mock("Stadline\StatusPageBundle\Requirements\RequirementCollections");
     }
 
     public function testDefineMostCriticalStatusCodeWithSymfonyRequirementsFailedReturns500()
@@ -75,6 +77,46 @@ class StatusCodeHandlerTest extends WebTestCase
         $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection);
 
         $this->assertEquals(500, $statusCodeReturned);
+    }
+
+    public function testGetRequirementsCollectionsWithIgnoreWarning()
+    {
+        $ignoreWarning = 1;
+
+        $failedRequirementsCollectionsExpected = $this->getFailedRequirementsCollectionWithSymfonyAndVersionFailed();
+
+        $this->requirementCollectionsMock->shouldReceive('getFailedRequirements')
+            ->andReturn($failedRequirementsCollectionsExpected);
+
+        $this->statusCodeHandlerMock->shouldReceive('getRequirementsCollections')
+            ->passthru();
+
+        $collectionsReturned = $this->statusCodeHandlerMock->getRequirementsCollections($this->requirementCollectionsMock, $ignoreWarning);
+
+        $this->assertEquals($failedRequirementsCollectionsExpected, $collectionsReturned);
+    }
+
+    public function testGetRequirementsCollectionsWithoutIgnoreWarning()
+    {
+        $ignoreWarning = 0;
+
+        $failedRequirementsCollection = $this->getFailedRequirementsCollectionWithSymfonyAndVersionFailed();
+        $failedRecommendationsCollection = $this->getFailedRecommendationsCollectionWithSymfonyFailed();
+
+        $this->requirementCollectionsMock->shouldReceive('getFailedRequirements')
+            ->andReturn($failedRequirementsCollection);
+
+        $this->requirementCollectionsMock->shouldReceive('getFailedRecommendations')
+            ->andReturn($failedRecommendationsCollection);
+
+        $this->statusCodeHandlerMock->shouldReceive('getRequirementsCollections')
+            ->passthru();
+
+        $collectionsExpected = array_merge_recursive($failedRequirementsCollection, $failedRecommendationsCollection);
+        $collectionsReturned = $this->statusCodeHandlerMock->getRequirementsCollections($this->requirementCollectionsMock, $ignoreWarning);
+
+        $this->assertEquals($collectionsExpected, $collectionsReturned);
+        $this->assertCount(2, $collectionsExpected['Symfony']); // assert array merged recursively
     }
 
     public function testGetMostCriticalStatusCodeWithSymfonyRequirementsFailedReturns500()
@@ -203,6 +245,22 @@ class StatusCodeHandlerTest extends WebTestCase
         $statusCodeReturnedWith409 = $this->statusCodeHandlerMock->getStatusCode(409, [true, false, true]);
 
         $this->assertEquals(409, $statusCodeReturnedWith409);
+    }
+
+    private function getFailedRecommendationsCollectionWithSymfonyFailed()
+    {
+        $failedRequirementsCollection = [
+            "Symfony" => [
+                0 => new \Requirement(
+                    false,
+                    "Recommandation XXX",
+                    "Need to fix this recommandation",
+                    true
+                )
+            ]
+        ];
+
+        return $failedRequirementsCollection;
     }
 
     private function getFailedRequirementsCollectionWithSymfonyFailed()
