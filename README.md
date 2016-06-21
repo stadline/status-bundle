@@ -73,8 +73,11 @@ Depuis votre bundle, créez une classe de prérequis
     {
         public function __construct()
         {
-            $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>");
+            $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>", $informative = false, $dependant = false, $fromApp = true);
             $this->addRecommendation(1 == 1, "True recommendation succeed", "It's OK");
+
+            // Possibilité d'ajouter des options sur les requirements et les recommandations :
+            // informative, dependant, fromApp
         }
         
         public function getName()
@@ -117,11 +120,16 @@ Le code status de la page fluctue en fonction des erreurs rencontrées dans les 
 **/status**
 
 -   200 : Aucune erreur
--   501 : Des recommendations en erreur
--   501 : Des prérequis en erreur 
+-   409 : Service externe non OK
+-   417 : Point informatif non OK
+-   500 : Des recommendations "vitales" en erreur
+-   500 : Des prérequis "vitaux" en erreur
 
 **/status?ignore-warnings=1**
 
 -   200 : Aucune erreur
 -   200 : Des recommendations en erreur
--   501 : Des prérequis en erreur 
+-   409 : Service externe non OK
+-   417 : Point informatif non OK
+-   500 : Des recommendations "vitales" en erreur
+-   500 : Des prérequis "vitaux" en erreur
