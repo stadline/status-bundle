@@ -26,7 +26,16 @@ class StatusController extends Controller
         ));
 
         if ($collections->hasIssue($ignoreWarning)) {
-            $response->setStatusCode("501");
+            $failedRequirementsCollections = $collections->getFailedRequirements();
+
+            if (!$ignoreWarning) {
+                $failedRecommendationsCollections = $collections->getFailedRecommendations();
+                $failedRequirementsCollections = array_merge_recursive($failedRequirementsCollections, $failedRecommendationsCollections);
+            }
+
+            $statusCodeHandler = $this->get('stadline_status_page.statuscode.handler');
+
+            $response->setStatusCode($statusCodeHandler->defineMostCriticalStatusCode($failedRequirementsCollections));
         }
 
         return $response;

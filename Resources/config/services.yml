@@ -2,6 +2,7 @@ parameters:
     stadline_status_page.symfony.requirement.class: 'Stadline\StatusPageBundle\Requirements\SymfonyRequirements'
     stadline_status_page.requirement.collections.class: 'Stadline\StatusPageBundle\Requirements\RequirementCollections'
     stadline_status_page.version.requirement.class: 'Stadline\StatusPageBundle\Requirements\VersionRequirements'
+    stadline_status_page.statuscode.handler.class: 'Stadline\StatusPageBundle\Handler\StatusCodeHandler'
 
 services:
     stadline_status_page.version.requirement:
@@ -17,3 +18,8 @@ services:
         class: '%stadline_status_page.symfony.requirement.class%'
         tags:
           - { name: 'status_page.requirement' }
+
+    stadline_status_page.statuscode.handler:
+        class: '%stadline_status_page.statuscode.handler.class%'
+        tags:
+          - { name: 'status_page.handler' }

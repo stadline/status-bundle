@@ -2,15 +2,8 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-use \Requirement as BaseRequirement;
-
-class Requirement extends BaseRequirement
+class AppRequirement extends \Requirement
 {
-    protected $fulfilled;
-    protected $testMessage;
-    protected $helpText;
-    protected $helpHtml;
-    protected $optional;
     protected $informative;
     protected $dependant;
     protected $fromApp;
@@ -29,18 +22,15 @@ class Requirement extends BaseRequirement
      */
     public function __construct($fulfilled, $testMessage, $helpHtml, $helpText = null, $optional = false, $informative = false, $dependant = false, $fromApp = true)
     {
-        $this->fulfilled = (bool) $fulfilled;
-        $this->testMessage = (string) $testMessage;
-        $this->helpHtml = (string) $helpHtml;
-        $this->helpText = null === $helpText ? strip_tags($this->helpHtml) : (string) $helpText;
-        $this->optional = (bool) $optional;
+        parent::__construct($fulfilled, $testMessage, $helpHtml, $helpText, $optional);
+
         $this->informative = (bool) $informative;
         $this->dependant = (bool) $dependant;
         $this->fromApp = (bool) $fromApp;
     }
 
     /**
-     * @return boolean
+     * @return bool true if informative, false if not
      */
     public function isInformative()
     {
@@ -48,7 +38,7 @@ class Requirement extends BaseRequirement
     }
 
     /**
-     * @return boolean
+     * @return bool true if dependant from an element, false if not
      */
     public function isDependant()
     {
@@ -56,7 +46,7 @@ class Requirement extends BaseRequirement
     }
 
     /**
-     * @return boolean
+     * @return bool true if is from app, false if external
      */
     public function isFromApp()
     {
