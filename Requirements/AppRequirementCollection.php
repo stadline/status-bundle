@@ -19,17 +19,19 @@ class AppRequirementCollection
     /**
      * Adds a mandatory requirement.
      *
-     * @param bool        $fulfilled   Whether the requirement is fulfilled
-     * @param string      $testMessage The message for testing the requirement
-     * @param string      $helpHtml    The help text formatted in HTML for resolving the problem
-     * @param string|null $helpText    The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
-     * @param bool|false  $informative If requirement is informative or not
-     * @param bool|false  $dependant   If requirement depends of external element or not
-     * @param bool|true   $fromApp     If requirement is from an external service or not
+     * @param bool           $fulfilled   Whether the requirement is fulfilled
+     * @param string         $testMessage The message for testing the requirement
+     * @param string         $helpHtml    The help text formatted in HTML for resolving the problem
+     * @param string|null    $helpText    The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
+     * @param array<boolean> $types       Three booleans (informative, dependant, fromApp)
      */
-    public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null, $informative = false, $dependant = false, $fromApp = true)
+    public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null, $types = [
+        AppRequirement::INFORMATIVE,
+        AppRequirement::DEPENDANT,
+        AppRequirement::FROM_APP
+    ])
     {
-        $this->add(new AppRequirement($fulfilled, $testMessage, $helpHtml, $helpText, false, $informative, $dependant, $fromApp));
+        $this->add(new AppRequirement($fulfilled, $testMessage, $helpHtml, $helpText, false, $types));
     }
 
     /**
@@ -39,13 +41,15 @@ class AppRequirementCollection
      * @param string      $testMessage The message for testing the recommendation
      * @param string      $helpHtml    The help text formatted in HTML for resolving the problem
      * @param string|null $helpText    The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
-     * @param bool|false  $informative If requirement is informative or not
-     * @param bool|false  $dependant   If requirement depends of external element or not
-     * @param bool|true   $fromApp     If requirement is from an external service or not
+     * @param array<boolean> $types       Three booleans (informative, dependant, fromApp)
      */
-    public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null, $informative = false, $dependant = false, $fromApp = true)
+    public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null, $types = [
+        AppRequirement::INFORMATIVE,
+        AppRequirement::DEPENDANT,
+        AppRequirement::FROM_APP
+    ])
     {
-        $this->add(new AppRequirement($fulfilled, $testMessage, $helpHtml, $helpText, true, $informative, $dependant, $fromApp));
+        $this->add(new AppRequirement($fulfilled, $testMessage, $helpHtml, $helpText, true, $types));
     }
 
     /**

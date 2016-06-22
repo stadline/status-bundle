@@ -4,6 +4,10 @@ namespace Stadline\StatusPageBundle\Requirements;
 
 class AppRequirement extends \Requirement
 {
+    const INFORMATIVE = false;
+    const DEPENDANT = false;
+    const FROM_APP = true;
+
     protected $informative;
     protected $dependant;
     protected $fromApp;
@@ -11,22 +15,24 @@ class AppRequirement extends \Requirement
     /**
      * Constructor that initializes the requirement.
      *
-     * @param bool        $fulfilled   Whether the requirement is fulfilled
-     * @param string      $testMessage The message for testing the requirement
-     * @param string      $helpHtml    The help text formatted in HTML for resolving the problem
-     * @param string|null $helpText    The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
-     * @param bool        $optional    Whether this is only an optional recommendation not a mandatory requirement
-     * @param bool        $informative If requirement is informative or not
-     * @param bool        $dependant   If requirement depends of external element or not
-     * @param bool        $fromApp     If requirement is from an external service or not
+     * @param bool           $fulfilled   Whether the requirement is fulfilled
+     * @param string         $testMessage The message for testing the requirement
+     * @param string         $helpHtml    The help text formatted in HTML for resolving the problem
+     * @param string|null    $helpText    The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
+     * @param bool           $optional    Whether this is only an optional recommendation not a mandatory requirement
+     * @param array<boolean> $types       Three booleans (informative, dependant, fromApp)
      */
-    public function __construct($fulfilled, $testMessage, $helpHtml, $helpText = null, $optional = false, $informative = false, $dependant = false, $fromApp = true)
+    public function __construct($fulfilled, $testMessage, $helpHtml, $helpText = null, $optional = false, $types = [
+        self::INFORMATIVE,
+        self::DEPENDANT,
+        self::FROM_APP
+    ])
     {
         parent::__construct($fulfilled, $testMessage, $helpHtml, $helpText, $optional);
 
-        $this->informative = (bool) $informative;
-        $this->dependant = (bool) $dependant;
-        $this->fromApp = (bool) $fromApp;
+        $this->informative = (bool) $types[0];
+        $this->dependant = (bool) $types[1];
+        $this->fromApp = (bool) $types[2];
     }
 
     /**

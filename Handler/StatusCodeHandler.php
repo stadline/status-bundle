@@ -6,13 +6,19 @@ use Stadline\StatusPageBundle\Requirements\RequirementCollections;
 
 class StatusCodeHandler
 {
+    const OK_CODE = 200;
+    const INTERNAL_BROKEN_CODE = 500;
+    const EXTERNAL_BROKEN_CODE = 409;
+    const INFORMATIVE_CODE = 417;
+
     /**
      * Define the most critical status code of the failed requirements collection
      *
      * @param mixed $failedRequirementsCollection
+     * @param int $ignoreWarning
      * @return integer
      */
-    public function defineMostCriticalStatusCode($failedRequirementsCollection)
+    public function defineMostCriticalStatusCode($failedRequirementsCollection, $ignoreWarning)
     {
         $statusCodeOfCollection = [];
 
@@ -20,7 +26,13 @@ class StatusCodeHandler
             $statusCodeOfCollection[] = $this->getMostCriticalStatusCode($collectionName, $requirements);
         }
 
-        return max($statusCodeOfCollection); // return the bigger value
+        $statusCode = max($statusCodeOfCollection); // return the bigger value
+
+        if ($statusCode === self::INFORMATIVE_CODE && $ignoreWarning) {
+            $statusCode = self::OK_CODE;
+        }
+
+        return $statusCode;
     }
 
     /**
@@ -50,7 +62,7 @@ class StatusCodeHandler
     protected function getMostCriticalStatusCode($collectionName, array $requirements)
     {
         if ($collectionName === "Symfony") {
-            return 500;
+            return self::INTERNAL_BROKEN_CODE;
         }
 
         $statusCode = 0;
@@ -79,16 +91,16 @@ class StatusCodeHandler
         // priority is 500, 409, 417 for status codes
         switch ($terms) {
             case array(false, false, true): // Not informative, not dependant and from app
-                $statusCode = 500;
+                $statusCode = self::INTERNAL_BROKEN_CODE;
                 break;
             case array(false, true, false): // Not informative, dependant and not from app
-                if ($statusCode != 500) {
-                    $statusCode = 409;
+                if ($statusCode != self::INTERNAL_BROKEN_CODE) {
+                    $statusCode = self::EXTERNAL_BROKEN_CODE;
                 }
                 break;
             default: // Informative
-                if ($statusCode != 500 && $statusCode != 409) {
-                    $statusCode = 417;
+                if ($statusCode != self::INTERNAL_BROKEN_CODE && $statusCode != self::EXTERNAL_BROKEN_CODE) {
+                    $statusCode = self::INFORMATIVE_CODE;
                 }
                 break;
         }

@@ -38,7 +38,7 @@ class StatusCodeHandlerTest extends WebTestCase
         $this->statusCodeHandlerMock->shouldReceive('defineMostCriticalStatusCode')
             ->passthru();
 
-        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection);
+        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection, 0);
 
         $this->assertEquals(500, $statusCodeReturned);
     }
@@ -54,7 +54,7 @@ class StatusCodeHandlerTest extends WebTestCase
         $this->statusCodeHandlerMock->shouldReceive('defineMostCriticalStatusCode')
             ->passthru();
 
-        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection);
+        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection, 0);
 
         $this->assertEquals(417, $statusCodeReturned);
     }
@@ -74,9 +74,25 @@ class StatusCodeHandlerTest extends WebTestCase
         $this->statusCodeHandlerMock->shouldReceive('defineMostCriticalStatusCode')
             ->passthru();
 
-        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection);
+        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection, 0);
 
         $this->assertEquals(500, $statusCodeReturned);
+    }
+
+    public function testDefineMostCriticalStatusCodeWhenGetMostCriticalStatusCodeReturns417AndIgnoreWarningEnabledReturns200()
+    {
+        $ignoreWarning = 1;
+
+        $failedRequirementsCollection = $this->getFailedRequirementsCollectionWithSymfonyAndVersionFailed();
+
+        $this->statusCodeHandlerMock->shouldReceive('getMostCriticalStatusCode')
+            ->andReturn(417);
+        $this->statusCodeHandlerMock->shouldReceive('defineMostCriticalStatusCode')
+            ->passthru();
+
+        $statusCodeReturned = $this->statusCodeHandlerMock->defineMostCriticalStatusCode($failedRequirementsCollection, $ignoreWarning);
+
+        $this->assertEquals(200, $statusCodeReturned);
     }
 
     public function testGetRequirementsCollectionsWithIgnoreWarning()
@@ -289,7 +305,7 @@ class StatusCodeHandlerTest extends WebTestCase
                     "NONE",
                     false,
                     false,
-                    true
+                    [true, false, true]
                 ),
                 1 => new AppRequirement(
                     false,
@@ -297,7 +313,7 @@ class StatusCodeHandlerTest extends WebTestCase
                     "NONE",
                     false,
                     false,
-                    true
+                    [true, false, true]
                 ),
                 2 => new AppRequirement(
                     false,
@@ -305,7 +321,7 @@ class StatusCodeHandlerTest extends WebTestCase
                     "NONE",
                     false,
                     false,
-                    true
+                    [true, false, true]
                 )
             ]
         ];
