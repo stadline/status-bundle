@@ -28,5 +28,14 @@ class StadlineStatusPageExtension extends Extension
             $appLoader = new Loader\YamlFileLoader($container, new FileLocator($appRootDir . '/config'));
             $appLoader->load('version.yml');
         }
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        foreach (['status_login', 'status_password'] as $attribute) {
+            if (isset($config[$attribute])) {
+                $container->setParameter('status_bundle.config.'.$attribute, $config[$attribute]);
+            }
+        }
     }
 }
