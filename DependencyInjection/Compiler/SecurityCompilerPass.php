@@ -33,7 +33,7 @@ class SecurityCompilerPass implements CompilerPassInterface
                         'role' => self::ROLE_STATUS_ADMIN
                     ]
                 ],
-                'firewall' => [
+                'firewalls' => [
                     'default' => [
                         'anonymous' => null,
                         'http_basic' => null,
@@ -52,6 +52,8 @@ class SecurityCompilerPass implements CompilerPassInterface
                     ],
                 ]
             ]);
+
+            $container->compile();
         }
     }
 }
