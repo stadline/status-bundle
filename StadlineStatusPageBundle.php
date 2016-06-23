@@ -14,6 +14,5 @@ class StadlineStatusPageBundle extends Bundle
 		parent::build($container);
 		
 		$container->addCompilerPass(new RequirementCompilerPass());
-		$container->addCompilerPass(new SecurityCompilerPass());
 	}
 }
