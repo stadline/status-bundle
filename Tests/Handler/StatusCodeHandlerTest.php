@@ -14,6 +14,7 @@ class StatusCodeHandlerTest extends WebTestCase
     public function setUp()
     {
         $this->initMock();
+        require_once(__DIR__.'/../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php');
     }
 
     public function tearDown()

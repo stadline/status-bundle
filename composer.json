@@ -21,15 +21,10 @@
     "require-dev": {
         "mockery/mockery": "~0.9"
     },
-    "suggest": {
-    },
     "autoload" : {
         "psr-0" : {
             "Stadline\\StatusPageBundle": ""
-        },
-	"classmap": [
-	    "vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php"
-	]
+        }
     },
     "target-dir" : "Stadline/StatusPageBundle",
     "extra": {
