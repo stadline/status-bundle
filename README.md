@@ -50,6 +50,24 @@ composer.json
     # version file
     /app/config/version.yml
     
+security.yml
+
+    security:
+        providers:
+            [...]
+            status_page:
+                memory:
+                   users:
+                        stadline: { password: ef06edb7de63121a77b596d1c762bc971cfb3311 }
+                    
+        firewalls:
+            [...]
+            # enable password authentication for status page
+            status:
+                pattern: ^/status
+                http_basic:
+                    provider: status_page
+
 
 A propos
 --------
