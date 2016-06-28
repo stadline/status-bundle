@@ -57,8 +57,8 @@ security.yml
             [...]
             status_page:
                 memory:
-                   users:
-                        stadline: { password: ef06edb7de63121a77b596d1c762bc971cfb3311 }
+                    users:
+                        '%status_page.credentials.username%': { password: '%status_page.credentials.password%' }
                     
         firewalls:
             [...]
@@ -67,6 +67,19 @@ security.yml
                 pattern: ^/status
                 http_basic:
                     provider: status_page
+
+parameters.yml
+
+    [...]
+    status_page.credentials.username: 'login'
+    status_page.credentials.password: 'pass'
+    
+parameters.yml.dist
+
+    [...]
+    # Status page security
+    status_page.credentials.username: 'login'
+    status_page.credentials.password: 'pass'
 
 
 A propos
