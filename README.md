@@ -53,6 +53,10 @@ composer.json
 security.yml
 
     security:
+        encoders:
+            [...]
+            Symfony\Component\Security\Core\User\User: plaintext
+        
         providers:
             [...]
             status_page:
