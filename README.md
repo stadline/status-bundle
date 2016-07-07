@@ -1,7 +1,7 @@
 StadlineStatusPageBundle
 ==============================
 
-Compatible uniquement Symfony2 (testé Symfony 2.8.x)
+Compatible uniquement Symfony2 (testé Symfony 2.8.x) et Symfony3 (testé Symfony 3.0.x)
 
 Installation:
 -------------
@@ -26,27 +26,34 @@ composer.json
             "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
         ]
     }
-    
+
     "require": {
         "stadline/status-bundle": "dev-master"
     }
-    
+
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/stadline/status-bundle.git"
         }
     ]
-    
+
     # Symfony 2
     "autoload": {
         "classmap": [
             "app/SymfonyRequirements.php"
         ]
     }
-   
+
+    # Symfony 3
+    "autoload": {
+        "classmap": [
+            "var/SymfonyRequirements.php"
+        ]
+    }
+
 .gitignore (à la racine du projet)
-    
+
     # version file
     /app/config/version.yml
     
@@ -97,13 +104,13 @@ Ajouter des prérequis
 Depuis votre bundle, créez une classe de prérequis
 
     <?php
-    
+
     // src/My/CustomBundle/Requirements/CustomRequirements.php
-    
+
     namespace MyCustomBundle\Requirements;
-        
+
     use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface
-        
+
     class CustomRequirements extends \RequirementCollection implements RequirementCollectionInterface
     {
         public function __construct()
@@ -120,7 +127,7 @@ Depuis votre bundle, créez une classe de prérequis
                 $fromApp = true
             ]
         }
-        
+
         public function getName()
         {
             return "Custom";
@@ -132,7 +139,7 @@ Puis ajoutez cette classe en tant que service de prérequis
     # src/My/CustomBundle/Resources/services.yml
     parameters:
         my_custom.requirement.class: My\CustomBundle\Requirements\CustomRequirements
-        
+
     services:
         my_custom.requirement:
             class: %my_custom.requirement.class%
