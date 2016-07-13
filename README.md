@@ -74,9 +74,10 @@ Depuis votre bundle, créez une classe de prérequis
 
     namespace MyCustomBundle\Requirements;
 
-    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface
+    use Stadline\StatusPageBundle\Requirements\AppRequirementCollection;
+    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface;
 
-    class CustomRequirements extends \RequirementCollection implements RequirementCollectionInterface
+    class CustomRequirements extends AppRequirementCollection implements RequirementCollectionInterface
     {
         public function __construct()
         {
@@ -90,7 +91,7 @@ Depuis votre bundle, créez une classe de prérequis
                 $informative = false,
                 $dependant = false,
                 $fromApp = true
-            ]
+            ]);
         }
 
         public function getName()
