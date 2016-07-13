@@ -1,7 +1,7 @@
 StadlineStatusPageBundle
 ==============================
 
-Compatible uniquement Symfony2 (testé Symfony 2.8.x) et Symfony3 (testé Symfony 3.0.x)
+Compatible uniquement Symfony2 (testé Symfony 2.8.x) et Symfony3 (testé Symfony 3.0.x et 3.1.x)
 
 Installation:
 -------------
