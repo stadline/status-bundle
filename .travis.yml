@@ -8,6 +8,7 @@ php:
 env:
   - SYMFONY_VERSION=2.8.*
   - SYMFONY_VERSION=3.0.*
+  - SYMFONY_VERSION=3.1.*
   - SYMFONY_VERSION=dev-master
 
 matrix:
@@ -18,5 +19,5 @@ matrix:
 before_script:
     - composer install
 
-script: 
+script:
     - phpunit

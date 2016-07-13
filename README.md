@@ -1,7 +1,7 @@
 StadlineStatusPageBundle
 ==============================
 
-Compatible uniquement Symfony2 (testé Symfony 2.8.x) et Symfony3 (testé Symfony 3.0.x)
+Compatible uniquement Symfony2 (testé Symfony 2.8.x) et Symfony3 (testé Symfony 3.0.x et 3.1.x)
 
 Installation:
 -------------
@@ -109,9 +109,10 @@ Depuis votre bundle, créez une classe de prérequis
 
     namespace MyCustomBundle\Requirements;
 
-    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface
+    use Stadline\StatusPageBundle\Requirements\AppRequirementCollection;
+    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface;
 
-    class CustomRequirements extends \RequirementCollection implements RequirementCollectionInterface
+    class CustomRequirements extends AppRequirementCollection implements RequirementCollectionInterface
     {
         public function __construct()
         {
@@ -125,7 +126,7 @@ Depuis votre bundle, créez une classe de prérequis
                 $informative = false,
                 $dependant = false,
                 $fromApp = true
-            ]
+            ]);
         }
 
         public function getName()
