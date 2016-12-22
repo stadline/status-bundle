@@ -1,24 +1,25 @@
-<?php 
+<?php
 
 namespace Stadline\StatusPageBundle\Requirements;
 
 class RequirementCollections implements \IteratorAggregate
 {
+
     /**
      * @var RequirementCollectionInterface[]
      */
-	private $collections = array();
+    private $collections = array();
 
     /**
      * Add a collection.
      *
      * @param RequirementCollectionInterface $collection
      */
-	public function addCollection(RequirementCollectionInterface $collection)
-	{
-		$this->collections[] = $collection;
-	}
-	
+    public function addCollection(RequirementCollectionInterface $collection)
+    {
+        $this->collections[] = $collection;
+    }
+
     /**
      * Gets the current RequirementCollections as an Iterator.
      *
@@ -28,7 +29,7 @@ class RequirementCollections implements \IteratorAggregate
     {
         return new \ArrayIterator($this->collections);
     }
-    
+
     /**
      * Gets failed requirements
      * 
@@ -37,13 +38,13 @@ class RequirementCollections implements \IteratorAggregate
     public function getFailedRequirements()
     {
         $array = array();
-        
+
         foreach ($this->collections as $collection) {
             if (count($failed = $collection->getFailedRequirements())) {
                 $array[$collection->getName()] = $failed;
             }
         }
-        
+
         return $array;
     }
 
@@ -55,13 +56,13 @@ class RequirementCollections implements \IteratorAggregate
     public function getFailedRecommendations()
     {
         $array = array();
-    
+
         foreach ($this->collections as $collection) {
             if (count($failed = $collection->getFailedRecommendations())) {
                 $array[$collection->getName()] = $failed;
             }
         }
-    
+
         return $array;
     }
 
@@ -73,7 +74,7 @@ class RequirementCollections implements \IteratorAggregate
      */
     public function hasIssue($ignoreWarnings = 0)
     {
-        if ($this->countFailedRequirements()+($ignoreWarnings?0:1)*$this->countFailedRecommendations() > 0) {
+        if ($this->countFailedRequirements() + ($ignoreWarnings ? 0 : 1) * $this->countFailedRecommendations() > 0) {
             return true;
         } else {
             return false;
@@ -88,11 +89,11 @@ class RequirementCollections implements \IteratorAggregate
     public function countRequirements()
     {
         $count = 0;
-        
+
         foreach ($this->collections as $collection) {
             $count += count($collection->getRequirements());
         }
-        
+
         return $count;
     }
 
@@ -104,11 +105,11 @@ class RequirementCollections implements \IteratorAggregate
     public function countRecommendations()
     {
         $count = 0;
-    
+
         foreach ($this->collections as $collection) {
             $count += count($collection->getRecommendations());
         }
-    
+
         return $count;
     }
 
@@ -131,5 +132,27 @@ class RequirementCollections implements \IteratorAggregate
     {
         return count($this->getFailedRecommendations(), COUNT_RECURSIVE) - count($this->getFailedRecommendations());
     }
-    
+
+    /**
+     * Returns the collection filtered by collection name
+     *
+     * @param array|string $names Collection names to filter against
+     * @return array
+     */
+    public function filter($names)
+    {
+        if (!is_array($names)) {
+            return $names = [$names];
+        }
+
+        $collections = new self();
+
+        foreach ($this->collections as $collection) {
+            if (in_array($collection->getName(), $names)) {
+                $collections->addCollection($collection);
+            }
+        }
+
+        return $collections;
+    }
 }

@@ -8,49 +8,55 @@ Installation:
 
 app/AppKernel.php
 
-    new Stadline\StatusPageBundle\StadlineStatusPageBundle()
+```php
+new Stadline\StatusPageBundle\StadlineStatusPageBundle()
+```
 
 app/config/routing.yml
 
-    stadline_status_page:
-        resource: "@StadlineStatusPageBundle/Resources/config/routing.yml"
-        prefix:   /
+```yaml
+stadline_status_page:
+    resource: "@StadlineStatusPageBundle/Resources/config/routing.yml"
+    prefix:   /
+```
 
 composer.json
 
-    "scripts": {
-        "post-install-cmd": [
-            "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
-        ],
-        "post-update-cmd": [
-            "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
-        ]
-    }
-
-    "require": {
-        "stadline/status-bundle": "dev-master"
-    }
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/stadline/status-bundle.git"
-        }
+```javascript
+"scripts": {
+    "post-install-cmd": [
+        "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
+    ],
+    "post-update-cmd": [
+        "Stadline\\StatusPageBundle\\Composer\\ScriptHandler::buildVersion"
     ]
+}
 
-    # Symfony 2
-    "autoload": {
-        "classmap": [
-            "app/SymfonyRequirements.php"
-        ]
-    }
+"require": {
+    "stadline/status-bundle": "dev-master"
+}
 
-    # Symfony 3
-    "autoload": {
-        "classmap": [
-            "var/SymfonyRequirements.php"
-        ]
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/stadline/status-bundle.git"
     }
+]
+
+# Symfony 2
+"autoload": {
+    "classmap": [
+        "app/SymfonyRequirements.php"
+    ]
+}
+
+# Symfony 3
+"autoload": {
+    "classmap": [
+        "var/SymfonyRequirements.php"
+    ]
+}
+```
 
 .gitignore (à la racine du projet)
 
@@ -103,49 +109,53 @@ Ajouter des prérequis
 
 Depuis votre bundle, créez une classe de prérequis
 
-    <?php
+```php
+<?php
 
-    // src/My/CustomBundle/Requirements/CustomRequirements.php
+// src/My/CustomBundle/Requirements/CustomRequirements.php
 
-    namespace MyCustomBundle\Requirements;
+namespace MyCustomBundle\Requirements;
 
-    use Stadline\StatusPageBundle\Requirements\AppRequirementCollection;
-    use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface;
+use Stadline\StatusPageBundle\Requirements\AppRequirementCollection;
+use Stadline\StatusPageBundle\Requirements\RequirementCollectionInterface;
 
-    class CustomRequirements extends AppRequirementCollection implements RequirementCollectionInterface
+class CustomRequirements extends AppRequirementCollection implements RequirementCollectionInterface
+{
+    public function __construct()
     {
-        public function __construct()
-        {
-            $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>");
-            $this->addRecommendation(1 == 1, "True recommendation succeed", "It's OK");
+        $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>");
+        $this->addRecommendation(1 == 1, "True recommendation succeed", "It's OK");
 
-            // Possibilité d'ajouter des options sur les requirements et les recommandations :
-            // informative, dependant, fromApp via une matrice ($types) de 3 booléens
-            // [false, false, true] par défaut
-            $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>", $types = [
-                $informative = false,
-                $dependant = false,
-                $fromApp = true
-            ]);
-        }
-
-        public function getName()
-        {
-            return "Custom";
-        }
+        // Possibilité d'ajouter des options sur les requirements et les recommandations :
+        // informative, dependant, fromApp via une matrice ($types) de 3 booléens
+        // [false, false, true] par défaut
+        $this->addRequirement(0 == 1, "False requirement failed", "<pre>try to put 0 == 0</pre>", $types = [
+            $informative = false,
+            $dependant = false,
+            $fromApp = true
+        ]);
     }
+
+    public function getName()
+    {
+        return "Custom";
+    }
+}
+```
 
 Puis ajoutez cette classe en tant que service de prérequis
 
-    # src/My/CustomBundle/Resources/services.yml
-    parameters:
-        my_custom.requirement.class: My\CustomBundle\Requirements\CustomRequirements
+```yaml
+# src/My/CustomBundle/Resources/services.yml
+parameters:
+    my_custom.requirement.class: My\CustomBundle\Requirements\CustomRequirements
 
-    services:
-        my_custom.requirement:
-            class: %my_custom.requirement.class%
-            tags:
-              - { name: status_page.requirement}
+services:
+    my_custom.requirement:
+        class: %my_custom.requirement.class%
+        tags:
+          - { name: status_page.requirement}
+```
 
 Le service taggé *status_page.requirement* sera automatiquement ajouté à la page de status disponible à l'url /status
 

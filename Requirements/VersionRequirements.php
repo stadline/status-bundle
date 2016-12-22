@@ -23,9 +23,9 @@ class VersionRequirements extends AppRequirementCollection implements Requiremen
             $branch = $container->getParameter('build_commit_branch');
         }
 
-        $this->addRequirement(isset($tag), "Git commit tag", isset($tag) ? $tag : 'NONE', false, [true, false, true]);
-        $this->addRequirement(isset($hash), "Git commit hash", isset($hash) ? $hash : 'NONE', false, [true, false, true]);
-        $this->addRequirement(isset($branch), "Git Branch", isset($branch) ? $branch : 'NONE', false, [true, false, true]);
+        $this->addRequirement(isset($tag), "Git commit tag", isset($tag) ? $tag : 'NONE', null, [true, false, true]);
+        $this->addRequirement(isset($hash), "Git commit hash", isset($hash) ? $hash : 'NONE', null, [true, false, true]);
+        $this->addRequirement(isset($branch), "Git Branch", isset($branch) ? $branch : 'NONE', null, [true, false, true]);
     }
 
     /**
