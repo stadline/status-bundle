@@ -25,7 +25,8 @@ class StatusCommand extends ContainerAwareCommand
                 ->addOption('--names', null, InputOption::VALUE_NONE, 'Display collection names')
                 ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display')
                 ->addOption('--exclude-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to exclude from the display')
-                ->addOption('--display-errors', null, InputOption::VALUE_NONE, 'Display only the requirements with errors');
+                ->addOption('--display-errors', null, InputOption::VALUE_NONE, 'Display only the requirements with errors')
+                ->addOption('--display-warnings', null, InputOption::VALUE_NONE, 'Display only the recommendations with warnings');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -56,6 +57,9 @@ class StatusCommand extends ContainerAwareCommand
             $recommendations = $collection->getRecommendations();
 
             foreach ($requirements as $requirement) {
+                if ($input->getOption('display-warnings')) {
+                    continue;
+                }
                 if ($input->getOption('display-errors') && $requirement->isFulFilled()) {
                     continue;
                 }
@@ -64,6 +68,9 @@ class StatusCommand extends ContainerAwareCommand
             }
             foreach ($recommendations as $recommendation) {
                 if ($input->getOption('display-errors')) {
+                    continue;
+                }
+                if ($input->getOption('display-warnings') && $recommendation->isFulFilled()) {
                     continue;
                 }
                 $rowData = $this->generateRowData($collection->getName(), $recommendation);
