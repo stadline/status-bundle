@@ -14,13 +14,13 @@ class StatusCommand extends ContainerAwareCommand
     const MESSAGE_LENGTH = 70;
 
     private $collections;
-    private $displayAll;
+    private $full;
 
     protected function configure()
     {
         $this->setName('stadline:requirements:status')
                 ->setDescription('Check application requirements')
-                ->addOption('--display-all', null, InputOption::VALUE_NONE, 'Does not truncate output')
+                ->addOption('--full', null, InputOption::VALUE_NONE, 'Does not truncate output')
                 ->addOption('--ignore-warnings', null, InputOption::VALUE_NONE, 'Ignore warnings for exit code')
                 ->addOption('--names', null, InputOption::VALUE_NONE, 'Display collection names')
                 ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display')
@@ -29,7 +29,7 @@ class StatusCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->displayAll = $input->getOption('display-all');
+        $this->full = $input->getOption('full');
         $this->collections = $this->getContainer()->get('stadline_status_page.requirement.collections');
 
         $this->displayNames($input, $output);
@@ -79,7 +79,7 @@ class StatusCommand extends ContainerAwareCommand
 
     private function truncate($text, $length)
     {
-        if ($this->displayAll) {
+        if ($this->full) {
             return $text;
         }
         if (strlen($text) <= $length) {
