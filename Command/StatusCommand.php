@@ -63,7 +63,7 @@ class StatusCommand extends ContainerAwareCommand
                 if ($input->getOption('display-errors') && $requirement->isFulFilled()) {
                     continue;
                 }
-                $rowData = $this->generateRowData($collection->getName(), $requirement);
+                $rowData = $this->generateRowData($collection->getName(), $requirement, 'error');
                 $table->addRow($rowData);
             }
             foreach ($recommendations as $recommendation) {
@@ -73,7 +73,7 @@ class StatusCommand extends ContainerAwareCommand
                 if ($input->getOption('display-warnings') && $recommendation->isFulFilled()) {
                     continue;
                 }
-                $rowData = $this->generateRowData($collection->getName(), $recommendation);
+                $rowData = $this->generateRowData($collection->getName(), $recommendation, 'comment');
                 $table->addRow($rowData);
             }
         }
@@ -81,11 +81,11 @@ class StatusCommand extends ContainerAwareCommand
         $table->render();
     }
 
-    private function generateRowData($collectionName, $test)
+    private function generateRowData($collectionName, $test, $style)
     {
         return [
             $collectionName,
-            $test->isFulfilled() ? '<info>✔</info>' : '<error>✘</error>',
+            $test->isFulfilled() ? '<info>✔</info>' : sprintf('<%1$s>✘</%1$s>', $style),
             $this->truncate($test->getTestMessage(), static::MESSAGE_LENGTH),
             $this->truncate($test->getHelpText(), static::MESSAGE_LENGTH),
         ];
