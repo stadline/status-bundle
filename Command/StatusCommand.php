@@ -23,7 +23,8 @@ class StatusCommand extends ContainerAwareCommand
                 ->addOption('--display-all', null, InputOption::VALUE_NONE, 'Does not truncate output')
                 ->addOption('--ignore-warnings', null, InputOption::VALUE_NONE, 'Ignore warnings for exit code')
                 ->addOption('--names', null, InputOption::VALUE_NONE, 'Display collection names')
-                ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display');
+                ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display')
+                ->addOption('--exclude-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to exclude from the display');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -112,7 +113,10 @@ class StatusCommand extends ContainerAwareCommand
     private function filterCollections(InputInterface $input, OutputInterface $output)
     {
         if ($collections = $input->getOption('include-collection')) {
-            $this->collections = $this->collections->filter($collections);
+            $this->collections = $this->collections->filter($collections, true);
+        } elseif ($collections = $input->getOption('exclude-collection')) {
+            $this->collections = $this->collections->filter($collections, false);
         }
     }
+
 }
