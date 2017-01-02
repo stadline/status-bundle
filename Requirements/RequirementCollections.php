@@ -137,9 +137,11 @@ class RequirementCollections implements \IteratorAggregate
      * Returns the collection filtered by collection name
      *
      * @param array|string $names Collection names to filter against
+     * @param boolean $include Flag determining if the returned collection should
+     * contain the matching names or not
      * @return array
      */
-    public function filter($names)
+    public function filter($names, $include = true)
     {
         if (!is_array($names)) {
             return $names = [$names];
@@ -148,7 +150,9 @@ class RequirementCollections implements \IteratorAggregate
         $collections = new self();
 
         foreach ($this->collections as $collection) {
-            if (in_array($collection->getName(), $names)) {
+            if (in_array($collection->getName(), $names) && $include) {
+                $collections->addCollection($collection);
+            } elseif (!in_array($collection->getName(), $names) && !$include) {
                 $collections->addCollection($collection);
             }
         }

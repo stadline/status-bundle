@@ -14,21 +14,24 @@ class StatusCommand extends ContainerAwareCommand
     const MESSAGE_LENGTH = 70;
 
     private $collections;
-    private $displayAll;
+    private $full;
 
     protected function configure()
     {
         $this->setName('stadline:requirements:status')
                 ->setDescription('Check application requirements')
-                ->addOption('--display-all', null, InputOption::VALUE_NONE, 'Does not truncate output')
+                ->addOption('--full', null, InputOption::VALUE_NONE, 'Does not truncate output')
                 ->addOption('--ignore-warnings', null, InputOption::VALUE_NONE, 'Ignore warnings for exit code')
                 ->addOption('--names', null, InputOption::VALUE_NONE, 'Display collection names')
-                ->addOption('--collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to display');
+                ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display')
+                ->addOption('--exclude-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to exclude from the display')
+                ->addOption('--display-errors', null, InputOption::VALUE_NONE, 'Display only the requirements with errors')
+                ->addOption('--display-warnings', null, InputOption::VALUE_NONE, 'Display only the recommendations with warnings');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->displayAll = $input->getOption('display-all');
+        $this->full = $input->getOption('full');
         $this->collections = $this->getContainer()->get('stadline_status_page.requirement.collections');
 
         $this->displayNames($input, $output);
@@ -54,11 +57,23 @@ class StatusCommand extends ContainerAwareCommand
             $recommendations = $collection->getRecommendations();
 
             foreach ($requirements as $requirement) {
-                $rowData = $this->generateRowData($collection->getName(), $requirement);
+                if ($input->getOption('display-warnings')) {
+                    continue;
+                }
+                if ($input->getOption('display-errors') && $requirement->isFulFilled()) {
+                    continue;
+                }
+                $rowData = $this->generateRowData($collection->getName(), $requirement, 'error');
                 $table->addRow($rowData);
             }
             foreach ($recommendations as $recommendation) {
-                $rowData = $this->generateRowData($collection->getName(), $recommendation);
+                if ($input->getOption('display-errors')) {
+                    continue;
+                }
+                if ($input->getOption('display-warnings') && $recommendation->isFulFilled()) {
+                    continue;
+                }
+                $rowData = $this->generateRowData($collection->getName(), $recommendation, 'comment');
                 $table->addRow($rowData);
             }
         }
@@ -66,11 +81,11 @@ class StatusCommand extends ContainerAwareCommand
         $table->render();
     }
 
-    private function generateRowData($collectionName, $test)
+    private function generateRowData($collectionName, $test, $style)
     {
         return [
             $collectionName,
-            $test->isFulfilled() ? '<info>✔</info>' : '<error>✘</error>',
+            $test->isFulfilled() ? '<info>✔</info>' : sprintf('<%1$s>✘</%1$s>', $style),
             $this->truncate($test->getTestMessage(), static::MESSAGE_LENGTH),
             $this->truncate($test->getHelpText(), static::MESSAGE_LENGTH),
         ];
@@ -78,7 +93,7 @@ class StatusCommand extends ContainerAwareCommand
 
     private function truncate($text, $length)
     {
-        if ($this->displayAll) {
+        if ($this->full) {
             return $text;
         }
         if (strlen($text) <= $length) {
@@ -111,8 +126,11 @@ class StatusCommand extends ContainerAwareCommand
      */
     private function filterCollections(InputInterface $input, OutputInterface $output)
     {
-        if ($collections = $input->getOption('collection')) {
-            $this->collections = $this->collections->filter($collections);
+        if ($collections = $input->getOption('include-collection')) {
+            $this->collections = $this->collections->filter($collections, true);
+        } elseif ($collections = $input->getOption('exclude-collection')) {
+            $this->collections = $this->collections->filter($collections, false);
         }
     }
+
 }
