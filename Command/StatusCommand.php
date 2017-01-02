@@ -24,7 +24,8 @@ class StatusCommand extends ContainerAwareCommand
                 ->addOption('--ignore-warnings', null, InputOption::VALUE_NONE, 'Ignore warnings for exit code')
                 ->addOption('--names', null, InputOption::VALUE_NONE, 'Display collection names')
                 ->addOption('--include-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to include in the display')
-                ->addOption('--exclude-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to exclude from the display');
+                ->addOption('--exclude-collection', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Collections to exclude from the display')
+                ->addOption('--display-errors', null, InputOption::VALUE_NONE, 'Display only the requirements with errors');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -55,10 +56,16 @@ class StatusCommand extends ContainerAwareCommand
             $recommendations = $collection->getRecommendations();
 
             foreach ($requirements as $requirement) {
+                if ($input->getOption('display-errors') && $requirement->isFulFilled()) {
+                    continue;
+                }
                 $rowData = $this->generateRowData($collection->getName(), $requirement);
                 $table->addRow($rowData);
             }
             foreach ($recommendations as $recommendation) {
+                if ($input->getOption('display-errors')) {
+                    continue;
+                }
                 $rowData = $this->generateRowData($collection->getName(), $recommendation);
                 $table->addRow($rowData);
             }
