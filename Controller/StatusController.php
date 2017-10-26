@@ -20,7 +20,7 @@ class StatusController extends Controller
 
         $collections = $this->get('stadline_status_page.requirement.collections');
 
-        $response = $this->render('StadlineStatusPageBundle:Status:index.html.twig', array(
+        $response = $this->render('@StadlineStatusPage/Status/index.html.twig', array(
             'collections' => $collections,
             'title' => "Project :: status page"
         ));
