@@ -2,7 +2,9 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-class SymfonyRequirements extends \SymfonyRequirements implements RequirementCollectionInterface
+use Stadline\StatusPageBundle\Services\Requirement;
+
+class SymfonyRequirements extends Requirement
 {
     /**
      * Get the name.

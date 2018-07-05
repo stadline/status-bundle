@@ -4,6 +4,7 @@ namespace Stadline\StatusPageBundle\Tests\Handler;
 
 use Mockery as m;
 use Stadline\StatusPageBundle\Requirements\AppRequirement;
+use Stadline\StatusPageBundle\Services\Requirement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class StatusCodeHandlerTest extends WebTestCase
@@ -14,7 +15,7 @@ class StatusCodeHandlerTest extends WebTestCase
     public function setUp()
     {
         $this->initMock();
-        require_once(__DIR__.'/../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php');
+        require_once(__DIR__.'/../../Services/SymfonyRequirements.php');
     }
 
     public function tearDown()
@@ -268,7 +269,7 @@ class StatusCodeHandlerTest extends WebTestCase
     {
         $failedRequirementsCollection = [
             "Symfony" => [
-                0 => new \Requirement(
+                0 => new Requirement(
                     false,
                     "Recommandation XXX",
                     "Need to fix this recommandation",
@@ -284,7 +285,7 @@ class StatusCodeHandlerTest extends WebTestCase
     {
         $failedRequirementsCollection = [
             "Symfony" => [
-                0 => new \Requirement(
+                0 => new Requirement(
                     false,
                     "Requirements file should be up-to-date",
                     "Your requirements file is outdated. Run composer install and re-check your configuration.",
