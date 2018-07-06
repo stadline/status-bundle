@@ -2,7 +2,7 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-use Stadline\StatusPageBundle\Services\Requirement;
+use Symfony\Requirements\Requirement;
 
 class SymfonyRequirements extends Requirement
 {
