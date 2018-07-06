@@ -13,7 +13,8 @@
         "symfony/event-dispatcher": "~2.7|| ~3.0 || ^4.0",
         "symfony/yaml": "~2.7 || ~3.0 || ^4.0",
         "symfony/framework-bundle": "~2.7 || ~3.0 || ^4.0",
-        "doctrine/doctrine-bundle": "^1.9"
+        "doctrine/doctrine-bundle": "^1.9",
+        "symfony/requirements-checker": "^1.1"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "In order to use MysqlRequirements."

@@ -4,8 +4,8 @@ namespace Stadline\StatusPageBundle\Tests\Handler;
 
 use Mockery as m;
 use Stadline\StatusPageBundle\Requirements\AppRequirement;
-use Stadline\StatusPageBundle\Services\Requirement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Requirements\Requirement;
 
 class StatusCodeHandlerTest extends WebTestCase
 {
@@ -15,7 +15,7 @@ class StatusCodeHandlerTest extends WebTestCase
     public function setUp()
     {
         $this->initMock();
-        require_once(__DIR__.'/../../Services/SymfonyRequirements.php');
+        require_once(__DIR__.'/../../vendor/symfony/requirements-checker/src/SymfonyRequirements.php');
     }
 
     public function tearDown()
