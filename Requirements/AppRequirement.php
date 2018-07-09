@@ -2,7 +2,9 @@
 
 namespace Stadline\StatusPageBundle\Requirements;
 
-class AppRequirement extends \Requirement
+use Symfony\Requirements\Requirement;
+
+class AppRequirement extends Requirement
 {
     const INFORMATIVE = false;
     const DEPENDANT = false;

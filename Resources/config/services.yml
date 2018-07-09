@@ -8,18 +8,23 @@ services:
     stadline_status_page.version.requirement:
         class: '%stadline_status_page.version.requirement.class%'
         arguments: ['@service_container']
+        public: true
         tags:
           - { name: 'status_page.requirement' }
 
     stadline_status_page.requirement.collections:
         class: '%stadline_status_page.requirement.collections.class%'
+        public: true
 
     stadline_status_page.symfony.requirement:
         class: '%stadline_status_page.symfony.requirement.class%'
+        arguments: ['%kernel.root_dir%']
+        public: true
         tags:
           - { name: 'status_page.requirement' }
 
     stadline_status_page.statuscode.handler:
         class: '%stadline_status_page.statuscode.handler.class%'
+        public: true
         tags:
           - { name: 'status_page.handler' }
