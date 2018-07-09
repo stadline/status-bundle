@@ -18,6 +18,7 @@ services:
 
     stadline_status_page.symfony.requirement:
         class: '%stadline_status_page.symfony.requirement.class%'
+        arguments: ['%kernel.root_dir%']
         public: true
         tags:
           - { name: 'status_page.requirement' }
