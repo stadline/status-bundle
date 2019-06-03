@@ -24,6 +24,9 @@ class ScriptHandler
     /** @var integer */
     private static $yamlMode = 2;
 
+    /** @var string */
+    private static $shortLastTag;
+
     /**
      * Build the new version.
      *
@@ -37,6 +40,7 @@ class ScriptHandler
             self::$commitHash = self::getGitProcessOutPut('git log --pretty=format:"%h" -n 1');
             self::$commitTag = self::getGitProcessOutPut('git describe --tags');
             self::$branch = self::getGitProcessOutPut('git rev-parse --abbrev-ref HEAD');
+            self::$shortLastTag = self::getGitProcessOutPut('git tag | tail -1');
             self::createVersionFile();
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
@@ -79,7 +83,8 @@ class ScriptHandler
                 'build_vcs'           => 'git',
                 'build_commit_tag'    => self::$commitTag,
                 'build_commit_hash'   => self::$commitHash,
-                'build_commit_branch' => self::$branch
+                'build_commit_branch' => self::$branch,
+                'build_short_last_tag' => self::$shortLastTag
             )),
             self::$yamlMode
         ));
