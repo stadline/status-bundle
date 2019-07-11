@@ -34,9 +34,9 @@ class ScriptHandler
         try {
             $extras = $event->getComposer()->getPackage()->getExtra();
             self::$sfAppDir = $extras['symfony-app-dir'];
-            self::$commitHash = self::getGitProcessOutPut('git log --pretty=format:"%h" -n 1');
-            self::$commitTag = self::getGitProcessOutPut('git describe --tags');
-            self::$branch = self::getGitProcessOutPut('git rev-parse --abbrev-ref HEAD');
+            self::$commitHash = self::getGitProcessOutPut('git log --pretty=format:"%h" -n 1') ?? 'unknown';
+            self::$commitTag = self::getGitProcessOutPut('git describe --tags') ?? 'unknown';
+            self::$branch = self::getGitProcessOutPut('git rev-parse --abbrev-ref HEAD') ?? 'unknown';
             self::createVersionFile();
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
