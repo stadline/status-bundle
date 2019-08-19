@@ -13,6 +13,7 @@ class StatusController extends Controller
      *
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function indexAction(Request $request)
     {
@@ -24,6 +25,15 @@ class StatusController extends Controller
             'collections' => $collections,
             'title' => "Project :: status page"
         ));
+
+        // check disk space
+        $ds = disk_total_space("app/cache");
+        $df = disk_free_space("app/cache");
+
+        $percentSpace = ($ds/$df)*100;
+        if ($percentSpace < 10) {
+           throw new \Exception('Not enough space available on the disk');
+        }
 
         if ($collections->hasIssue($ignoreWarning)) {
             $statusCodeHandler = $this->get('stadline_status_page.statuscode.handler');
