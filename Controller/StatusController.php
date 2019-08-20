@@ -13,7 +13,6 @@ class StatusController extends Controller
      *
      * @param Request $request
      * @return Response
-     * @throws \Exception
      */
     public function indexAction(Request $request)
     {
